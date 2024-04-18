@@ -24,3 +24,10 @@ def test_create_command_with_invalid_status():
     result = runner.invoke(cli, ["create", "--company-name", "My Corp", "--status", "NotAllowed", "--spec-version", "2.0.0"])
     assert result.exit_code != 0
     assert "Invalid value for '--status'" in result.output
+
+
+def test_create_command_with_invalid_spec_version():
+    runner = CliRunner()
+    result = runner.invoke(cli, ["create", "--company-name", "My Corp", "--status", "Active", "--spec-version", "3.0.0"])
+    assert result.exit_code != 0
+    assert "Invalid value for '--spec-version'" in result.output
