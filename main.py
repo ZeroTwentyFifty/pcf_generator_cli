@@ -11,7 +11,7 @@ def cli():
 
 @cli.command()
 @click.option("--company-name", prompt="Company name", help="The company name.")
-@click.option("--status", prompt="Status", help="The status of the product carbon footprint.", type=click.Choice(["Active", "Deprecated"]))
+@click.option("--status", prompt="Status", help="The status of the product carbon footprint.", type=click.Choice(["Active", "Deprecated"], case_sensitive=False))
 @click.option("--spec-version", prompt="Spec version", help="The specification version.", type=click.Choice(["2.0.0", "2.1.0", "2.2.0"]))
 @click.option("--company-ids", prompt="Company IDs", help="The company IDs.")
 @click.option("--product-description", prompt="Product description", help="The product description.")
