@@ -6,7 +6,7 @@ from main import cli
 
 def test_create_command():
     runner = CliRunner()
-    result = runner.invoke(cli, ["create", "--company-name", "My Corp", "--status", "Active", "--spec-version", "2.0.0", "--company-ids", "urn:uuid:69585GB6-56T9-6958-E526-6FDGZJHU1326,urn:epc:id:sgln:562958.00000.4", "--product-description", "Bio-Ethanol 98%, corn feedstock (bulk - no packaging)", "--product-ids", "urn:gtin:5695872369587", "--product-category-cpc", "6398", "--product-name-company", "Green Ethanol"])
+    result = runner.invoke(cli, ["create", "--version", 1, "--company-name", "My Corp", "--status", "Active", "--spec-version", "2.0.0", "--company-ids", "urn:uuid:69585GB6-56T9-6958-E526-6FDGZJHU1326,urn:epc:id:sgln:562958.00000.4", "--product-description", "Bio-Ethanol 98%, corn feedstock (bulk - no packaging)", "--product-ids", "urn:gtin:5695872369587", "--product-category-cpc", "6398", "--product-name-company", "Green Ethanol"])
     assert result.exit_code == 0
     assert "My Corp" in result.output
     assert "Active" in result.output
@@ -21,7 +21,7 @@ def test_create_command():
 
 def test_create_command_with_invalid_status():
     runner = CliRunner()
-    result = runner.invoke(cli, ["create", "--company-name", "My Corp", "--status", "NotAllowed", "--spec-version", "2.0.0"])
+    result = runner.invoke(cli, ["create", "--version", 1, "--company-name", "My Corp", "--status", "NotAllowed", "--spec-version", "2.0.0"])
     assert result.exit_code != 0
     assert "Invalid value for '--status'" in result.output
 
@@ -31,3 +31,17 @@ def test_create_command_with_invalid_spec_version():
     result = runner.invoke(cli, ["create", "--company-name", "My Corp", "--status", "Active", "--spec-version", "3.0.0"])
     assert result.exit_code != 0
     assert "Invalid value for '--spec-version'" in result.output
+
+
+def test_create_command_with_invalid_version():
+    runner = CliRunner()
+    result = runner.invoke(cli, ["create", "--company-name", "My Corp", "--status", "Active", "--spec-version", "2.0.0", "--version", "-1"])
+    assert result.exit_code != 0
+    assert "Version must be in the inclusive range of 0..2^31-1" in result.output
+
+
+def test_create_command_with_non_integer_version():
+    runner = CliRunner()
+    result = runner.invoke(cli, ["create", "--company-name", "My Corp", "--status", "Active", "--spec-version", "2.0.0", "--version", "abc"])
+    assert result.exit_code != 0
+    assert "Version must be an integer" in result.output
