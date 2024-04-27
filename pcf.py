@@ -3,21 +3,31 @@ from datetime import datetime
 
 
 class ProductCarbonFootprint:
-    def __init__(self, company_name, status, spec_version, version, company_ids, product_description, product_ids, product_category_cpc, product_name_company):
-        self.id = str(uuid.uuid4())
-        self.spec_version = spec_version
-        self.version = version
-        self.created = datetime.now().isoformat() + "Z"
-        self.status = status
-        self.company_name = company_name
-        self.company_ids = company_ids
-        self.product_description = product_description
-        self.product_ids = product_ids
-        self.product_category_cpc = product_category_cpc
-        self.product_name_company = product_name_company
-        self.comment = ""
+    def __init__(self,
+                 company_name: str,
+                 status: str,
+                 spec_version: str,
+                 version: int,
+                 company_ids: list[str],
+                 product_description: str,
+                 product_ids: list[str],
+                 product_category_cpc: str,
+                 product_name_company: str) -> None:
 
-    def to_dict(self):
+        self.id: str = str(uuid.uuid4())
+        self.spec_version: str = spec_version
+        self.version: int = version
+        self.created: str = datetime.now().isoformat() + "Z"
+        self.status: str = status
+        self.company_name: str = company_name
+        self.company_ids: list[str] = company_ids
+        self.product_description: str = product_description
+        self.product_ids: list[str] = product_ids
+        self.product_category_cpc: str = product_category_cpc
+        self.product_name_company: str = product_name_company
+        self.comment: str = ""
+
+    def to_dict(self) -> dict:
         """Converts the ProductCarbonFootprint object to a dictionary."""
         return {
             "id": self.id,
