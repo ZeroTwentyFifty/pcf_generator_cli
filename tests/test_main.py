@@ -1,3 +1,5 @@
+import json
+
 import pytest
 from click.testing import CliRunner
 
@@ -45,3 +47,17 @@ def test_create_command_with_non_integer_version():
     result = runner.invoke(cli, ["create", "--company-name", "My Corp", "--status", "Active", "--spec-version", "2.0.0", "--version", "abc"])
     assert result.exit_code != 0
     assert "Version must be an integer" in result.output
+
+
+def test_create_command_with_pretty_print():
+    runner = CliRunner()
+    result = runner.invoke(cli, [
+        "create", "--version", 1, "--company-name", "My Corp", "--status", "Active",
+        "--spec-version", "2.0.0", "--company-ids", "MyCorpId", "--product-description", "description",
+        "--product-ids", "product-ids", "--product-category-cpc", "12345",
+        "--product-name-company", "abc", "--pretty"])
+    assert result.exit_code == 0
+
+    # Load the output as JSON and check for the expected structure (Adapt as needed)
+    output_json = json.loads(result.output)
+    assert output_json['companyName'] == "My Corp"

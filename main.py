@@ -1,3 +1,4 @@
+import json
 import uuid
 from datetime import datetime
 
@@ -29,7 +30,10 @@ def cli():
 @click.option("--product-ids", prompt="Product IDs", help="The product IDs.")
 @click.option("--product-category-cpc", prompt="Product category CPC", help="The product category CPC.")
 @click.option("--product-name-company", prompt="Product name company", help="The product name company.")
-def create(company_name, status, spec_version, version, company_ids, product_description, product_ids, product_category_cpc, product_name_company):
+@click.option("--pretty", is_flag=True, default=False, help="Pretty-print the output.")
+def create(
+        company_name, status, spec_version, version, company_ids, product_description,
+        product_ids, product_category_cpc, product_name_company, pretty):
     """Create a new product carbon footprint."""
     pcf = {
         "id": str(uuid.uuid4()),
@@ -45,7 +49,11 @@ def create(company_name, status, spec_version, version, company_ids, product_des
         "productNameCompany": product_name_company,
         "comment": ""
     }
-    click.echo(pcf)
+
+    if pretty:
+        click.echo(json.dumps(pcf, indent=4))  # Pretty-print
+    else:
+        click.echo(pcf)  # Regular output
 
 
 if __name__ == "__main__":
