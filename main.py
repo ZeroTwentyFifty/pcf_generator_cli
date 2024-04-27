@@ -15,6 +15,14 @@ def validate_version(ctx, param, value):
     return value
 
 
+def validate_product_category_cpc(ctx, param, value):
+    if not value.isdigit():
+        raise click.BadParameter("Product category CPC must be a numerical value.")
+    if len(value) > 5:
+        raise click.BadParameter("Product category CPC cannot exceed 5 characters.")
+    return value
+
+
 @click.group()
 def cli():
     pass
@@ -28,7 +36,7 @@ def cli():
 @click.option("--company-ids", prompt="Company IDs", help="The company IDs.")
 @click.option("--product-description", prompt="Product description", help="The product description.")
 @click.option("--product-ids", prompt="Product IDs", help="The product IDs.")
-@click.option("--product-category-cpc", prompt="Product category CPC", help="The product category CPC.")
+@click.option("--product-category-cpc", prompt="Product category CPC", help="The product category CPC.", callback=validate_product_category_cpc)
 @click.option("--product-name-company", prompt="Product name company", help="The product name company.")
 @click.option("--pretty", is_flag=True, default=False, help="Pretty-print the output.")
 def create(

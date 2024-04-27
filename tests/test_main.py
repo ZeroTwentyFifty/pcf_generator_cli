@@ -61,3 +61,17 @@ def test_create_command_with_pretty_print():
     # Load the output as JSON and check for the expected structure (Adapt as needed)
     output_json = json.loads(result.output)
     assert output_json['companyName'] == "My Corp"
+
+
+def test_create_command_with_invalid_product_category_cpc_non_numeric():
+    runner = CliRunner()
+    result = runner.invoke(cli, ["create", "--product-category-cpc", "123AB"])
+    assert result.exit_code != 0
+    assert "Product category CPC must be a numerical value." in result.output
+
+
+def test_create_command_with_invalid_product_category_cpc_too_long():
+    runner = CliRunner()
+    result = runner.invoke(cli, ["create", "--product-category-cpc", "123456"])
+    assert result.exit_code != 0
+    assert "Product category CPC cannot exceed 5 characters." in result.output
