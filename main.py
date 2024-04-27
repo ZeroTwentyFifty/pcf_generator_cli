@@ -1,8 +1,8 @@
 import json
-import uuid
-from datetime import datetime
 
 import click
+
+from pcf import ProductCarbonFootprint
 
 
 def validate_version(ctx, param, value):
@@ -43,25 +43,18 @@ def create(
         company_name, status, spec_version, version, company_ids, product_description,
         product_ids, product_category_cpc, product_name_company, pretty):
     """Create a new product carbon footprint."""
-    pcf = {
-        "id": str(uuid.uuid4()),
-        "specVersion": spec_version,
-        "version": version,
-        "created": datetime.now().isoformat() + "Z",
-        "status": status,
-        "companyName": company_name,
-        "companyIds": company_ids.split(","),
-        "productDescription": product_description,
-        "productIds": product_ids.split(","),
-        "productCategoryCpc": product_category_cpc,
-        "productNameCompany": product_name_company,
-        "comment": ""
-    }
+
+    pcf = ProductCarbonFootprint(
+        company_name, status, spec_version, version,
+        company_ids.split(","), product_description,
+        product_ids.split(","), product_category_cpc,
+        product_name_company
+    )
 
     if pretty:
-        click.echo(json.dumps(pcf, indent=4))  # Pretty-print
+        click.echo(json.dumps(pcf.to_dict(), indent=4))
     else:
-        click.echo(pcf)  # Regular output
+        click.echo(pcf.to_dict())
 
 
 if __name__ == "__main__":
