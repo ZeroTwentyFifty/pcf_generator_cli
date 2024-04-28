@@ -1,6 +1,6 @@
 import pytest
 
-from urn import URN
+from urn import URN, CompanyId
 
 def test_valid_urn():
     urn_string = "urn:isbn:978-0-596-52932-1"
@@ -33,3 +33,23 @@ def test_uuid_urn():
 def test_valid_pathfinder_urns(urn_string):
     urn = URN(value=urn_string)
     assert urn.value == urn_string
+
+
+def test_valid_company_ids():
+    valid_ids = [
+        "urn:pathfinder:company:customcode:buyer-assigned:acme-corp",
+        "urn:pathfinder:company:customcode:vendor-assigned:12345"
+    ]
+    for cid in valid_ids:
+        CompanyId(value=cid)
+
+
+def test_invalid_company_ids():
+    invalid_ids = [
+        "urn:pathfinder:company:customcode:buyer-assigned:bad code",
+        "urn:pathfinder:company:customcode:vendor-assigned:",
+        "not-a-company-id"
+    ]
+    for cid in invalid_ids:
+        with pytest.raises(ValueError):
+            CompanyId(value=cid)
