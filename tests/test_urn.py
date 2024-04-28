@@ -1,6 +1,6 @@
 import pytest
 
-from urn import URN, CompanyId
+from urn import URN, CompanyId, ProductId
 
 def test_valid_urn():
     urn_string = "urn:isbn:978-0-596-52932-1"
@@ -53,3 +53,32 @@ def test_invalid_company_ids():
     for cid in invalid_ids:
         with pytest.raises(ValueError):
             CompanyId(value=cid)
+
+@pytest.mark.parametrize(
+    "product_id",
+    [
+        "urn:pathfinder:product:customcode:buyer-assigned:acme-product",
+        "urn:pathfinder:product:customcode:vendor-assigned:12345",
+        "urn:pathfinder:product:id:cas:64-17-5",
+        "urn:pathfinder:product:id:cas:1067-08-9",
+        "urn:pathfinder:product:id:cas:1067838-08-9",
+        "urn:pathfinder:product:id:iupac-inchi:1S/C9H8O4/c1-6(10)13-8-5-3-2-4-7(8)9(11)12/h2-5H,1H3,(H,11,12)"
+    ]
+)
+def test_valid_product_ids(product_id):
+    pid = ProductId(value=product_id)
+    assert pid.value == product_id
+
+
+@pytest.mark.parametrize(
+    "product_id",
+    [
+        "urn:pathfinder:product:customcode:buyer-assigned:acme product",
+        "urn:pathfinder:product:customcode:vendor-assigned:",
+        "urn:pathfinder:product:id:cas:17-5",
+        "urn:pathfinder:product:id:cas:12345678-08-9",
+    ]
+)
+def test_invalid_product_ids(product_id):
+    with pytest.raises(ValueError):
+        ProductId(value=product_id)

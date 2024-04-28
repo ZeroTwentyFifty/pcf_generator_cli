@@ -38,4 +38,18 @@ class CompanyId(URN):
 
 
 class ProductId(URN):
-    pass  # For now, no additional validation on top of URN
+    BUYER_ASSIGNED_PATTERN = re.compile(r"^urn:pathfinder:product:customcode:buyer-assigned:[a-zA-Z0-9-]+$")
+    VENDOR_ASSIGNED_PATTERN = re.compile(r"^urn:pathfinder:product:customcode:vendor-assigned:[a-zA-Z0-9-]+$")
+    CAS_PATTERN = re.compile(r"^urn:pathfinder:product:id:cas:[0-9]{1,7}-[0-9]+-[0-9]$")
+    IUPAC_INCHI_PATTERN = re.compile(r"^urn:pathfinder:product:id:iupac-inchi:.*$")
+
+    def _validate(self):
+        super()._validate()
+
+        if not any([
+            self.BUYER_ASSIGNED_PATTERN.match(self.value),
+            self.VENDOR_ASSIGNED_PATTERN.match(self.value),
+            self.CAS_PATTERN.match(self.value),
+            self.IUPAC_INCHI_PATTERN.match(self.value)
+        ]):
+            raise ValueError("ProductId does not conform to the required format")
