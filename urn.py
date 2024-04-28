@@ -1,4 +1,4 @@
-import re
+from urnparse import URN8141, InvalidURNFormatError
 
 
 class URN:
@@ -11,7 +11,9 @@ class URN:
         self._validate()
 
     def _validate(self):
-        if not re.match(r"^urn:[a-zA-Z0-9][a-zA-Z0-9-]{0,31}:(.*)$", self.value):
+        try:
+            URN8141.from_string(self.value)
+        except InvalidURNFormatError:
             raise ValueError("Value must be a valid URN")
 
     def __str__(self) -> str:

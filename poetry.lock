@@ -150,7 +150,21 @@ files = [
     {file = "typing_extensions-4.11.0.tar.gz", hash = "sha256:83f085bd5ca59c80295fc2a82ab5dac679cbe02b9f33f7d83af68e241bea51b0"},
 ]
 
+[[package]]
+name = "urnparse"
+version = "0.2.1"
+description = "Python library for generating and parsing and RFC 8141 compliant uniform resource names (URN)."
+optional = false
+python-versions = "*"
+files = [
+    {file = "urnparse-0.2.1-py2.py3-none-any.whl", hash = "sha256:8af095760c5166b472be4ca570c1d71eb9b82bb722409d76fdcde564de844b23"},
+    {file = "urnparse-0.2.1.tar.gz", hash = "sha256:15d0964c16388cb99bdd891e5ddfa2eeeb558dc16121f4bd7255f12f0b837777"},
+]
+
+[package.extras]
+tests = ["check-manifest", "isort", "pydocstyle", "pytest"]
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "9c8644e3e06169c2f8602b82cc2cfc574c8f1d1656071f9a81e4b67bde5328a7"
+content-hash = "162271a14a15c8f9f580541ccd5ac2ec6802ecdc881ec3eaeed457534854519a"
