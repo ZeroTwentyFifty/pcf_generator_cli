@@ -1,5 +1,6 @@
 import re
 
+import casregnum
 from urnparse import URN8141, InvalidURNFormatError
 
 
@@ -49,7 +50,16 @@ class ProductId(URN):
         if not any([
             self.BUYER_ASSIGNED_PATTERN.match(self.value),
             self.VENDOR_ASSIGNED_PATTERN.match(self.value),
-            self.CAS_PATTERN.match(self.value),
+            self._validate_cas_number(self.value),
             self.IUPAC_INCHI_PATTERN.match(self.value)
         ]):
             raise ValueError("ProductId does not conform to the required format")
+
+    def _validate_cas_number(self, value):
+        if self.CAS_PATTERN.match(value):
+            try:
+                casregnum.CAS(value.rsplit(':', 1)[-1])
+                return True
+            except ValueError:
+                return False
+        return False

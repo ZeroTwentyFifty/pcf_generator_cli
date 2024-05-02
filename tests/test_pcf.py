@@ -1,6 +1,4 @@
-import pytest
-
-from pcf import ProductCarbonFootprint
+from pcf_generator_cli.pcf import ProductCarbonFootprint
 
 
 def test_pcf_creation():

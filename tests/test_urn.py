@@ -1,6 +1,6 @@
 import pytest
 
-from urn import URN, CompanyId, ProductId
+from pcf_generator_cli.urn import URN, CompanyId, ProductId
 
 def test_valid_urn():
     urn_string = "urn:isbn:978-0-596-52932-1"
