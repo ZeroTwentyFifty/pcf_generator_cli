@@ -14,6 +14,11 @@ class CarbonFootprint:
         cross_sectoral_standards_used (list[str]): The cross-sectoral standards applied for calculating or allocating GHG emissions.
     """
     def __init__(self, declared_unit, unitary_product_amount, p_cf_excluding_biogenic, fossil_ghg_emissions, fossil_carbon_content, biogenic_carbon_content, characterization_factors, ipcc_characterization_factors_sources, cross_sectoral_standards_used):
+        accepted_declared_units = ['liter', 'kilogram', 'cubic meter', 'kilowatt hour', 'megajoule', 'ton kilometer',
+                                   'square meter']
+        if declared_unit not in accepted_declared_units:
+            raise ValueError(
+                f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join(accepted_declared_units)}")
         if unitary_product_amount <= 0:
             raise ValueError("unitary_product_amount must be strictly greater than 0")
         if p_cf_excluding_biogenic < 0:
