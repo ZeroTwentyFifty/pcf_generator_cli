@@ -116,6 +116,23 @@ files = [
 ]
 
 [[package]]
+name = "pact-methodology"
+version = "0.0.2"
+description = ""
+optional = false
+python-versions = "<4.0,>=3.11"
+files = [
+    {file = "pact_methodology-0.0.2-py3-none-any.whl", hash = "sha256:1e31ab4103a85c3a834ac5b559433ca3068228f8528beff0f78b24dfd68ce42f"},
+    {file = "pact_methodology-0.0.2.tar.gz", hash = "sha256:9d44cd732ccfc007126d06a7de5a0c4aafff4729a54c9bb366784c7442a08110"},
+]
+
+[package.dependencies]
+casregnum = ">=1.0.1,<2.0.0"
+pycountry = ">=23.12.11,<24.0.0"
+python-dateutil = ">=2.9.0.post0,<3.0.0"
+urnparse = ">=0.2.1,<0.3.0"
+
+[[package]]
 name = "pluggy"
 version = "1.4.0"
 description = "plugin and hook calling mechanisms for python"
@@ -129,6 +146,17 @@ files = [
 [package.extras]
 dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
+
+[[package]]
+name = "pycountry"
+version = "23.12.11"
+description = "ISO country, subdivision, language, currency and script definitions and their translations"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "pycountry-23.12.11-py3-none-any.whl", hash = "sha256:2ff91cff4f40ff61086e773d61e72005fe95de4a57bfc765509db05695dc50ab"},
+    {file = "pycountry-23.12.11.tar.gz", hash = "sha256:00569d82eaefbc6a490a311bfa84a9c571cff9ddbf8b0a4f4e7b4f868b4ad925"},
+]
 
 [[package]]
 name = "pytest"
@@ -149,6 +177,31 @@ pluggy = ">=1.4,<2.0"
 
 [package.extras]
 testing = ["argcomplete", "attrs (>=19.2)", "hypothesis (>=3.56)", "mock", "pygments (>=2.7.2)", "requests", "setuptools", "xmlschema"]
+
+[[package]]
+name = "python-dateutil"
+version = "2.9.0.post0"
+description = "Extensions to the standard Python datetime module"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
+files = [
+    {file = "python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3"},
+    {file = "python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"},
+]
+
+[package.dependencies]
+six = ">=1.5"
+
+[[package]]
+name = "six"
+version = "1.16.0"
+description = "Python 2 and 3 compatibility utilities"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+files = [
+    {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
+    {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
+]
 
 [[package]]
 name = "typing-extensions"
@@ -178,4 +231,4 @@ tests = ["check-manifest", "isort", "pydocstyle", "pytest"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "21ae7160a00ba3a95e052a6599b92ba815ed7b4532e9e75d0d512ea3f45796ab"
+content-hash = "c82221ab6d3774565f9f6a02d9097dde3c7fa8a2761f49ba95795a4056a0bce4"

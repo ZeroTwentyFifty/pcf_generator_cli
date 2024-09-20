@@ -1,61 +1,105 @@
 import json
+from datetime import datetime
 
 import click
 
-from pcf import ProductCarbonFootprint
+from pact_methodology.carbon_footprint.carbon_footprint import CarbonFootprint
+from pact_methodology.datetime import DateTime
+from pact_methodology.product_footprint.cpc import CPC
+from pact_methodology.product_footprint.product_footprint import ProductFootprint
+from pact_methodology.product_footprint.status import ProductFootprintStatus
+from pact_methodology.product_footprint.version import Version
+from pact_methodology.urn import CompanyId, ProductId
 
 
-def validate_version(ctx, param, value):
-    try:
-        version = int(value)
-        if not 0 <= version <= 2**31-1:
-            raise click.BadParameter("Version must be in the inclusive range of 0..2^31-1")
-    except ValueError:
-        raise click.BadParameter("Version must be an integer")
-    return value
+def validate_version(ctx: click.Context, param: click.Option, value: int) -> int:
+   """Validates the provided version."""
+   if not 0 <= value <= 2**31-1:
+       raise click.BadParameter("Version must be in the inclusive range of 0..2^31-1")
+   return value
 
 
-def validate_product_category_cpc(ctx, param, value):
-    if not value.isdigit():
-        raise click.BadParameter("Product category CPC must be a numerical value.")
-    if len(value) > 5:
-        raise click.BadParameter("Product category CPC cannot exceed 5 characters.")
-    return value
+def validate_product_category_cpc(ctx: click.Context, param: click.Option, value: str) -> str:
+   """Validates the provided product category CPC."""
+   if not value.isdigit():
+       raise click.BadParameter("Product category CPC must be a numerical value.")
+   if len(value) > 5:
+       raise click.BadParameter("Product category CPC cannot exceed 5 characters.")
+   return value
 
 
 @click.group()
-def cli():
-    pass
+def cli() -> None:
+   """CLI entry point."""
+   pass
 
 
 @cli.command()
 @click.option("--company-name", prompt="Company name", help="The company name.")
 @click.option("--status", prompt="Status", help="The status of the product carbon footprint.", type=click.Choice(["Active", "Deprecated"], case_sensitive=False))
-@click.option("--version", prompt="Version", help="The version.", callback=validate_version)
+@click.option("--version", prompt="Version", help="The version.", callback=validate_version, type=int)
 @click.option("--spec-version", prompt="Spec version", help="The specification version.", type=click.Choice(["2.0.0", "2.1.0", "2.2.0"]))
 @click.option("--company-ids", prompt="Company IDs", help="The company IDs.")
 @click.option("--product-description", prompt="Product description", help="The product description.")
 @click.option("--product-ids", prompt="Product IDs", help="The product IDs.")
 @click.option("--product-category-cpc", prompt="Product category CPC", help="The product category CPC.", callback=validate_product_category_cpc)
 @click.option("--product-name-company", prompt="Product name company", help="The product name company.")
+@click.option("--comment", prompt="Comment", help="Comment")
 @click.option("--pretty", is_flag=True, default=False, help="Pretty-print the output.")
 def create(
-        company_name, status, spec_version, version, company_ids, product_description,
-        product_ids, product_category_cpc, product_name_company, pretty):
-    """Create a new product carbon footprint."""
+        company_name: str,
+        status: str,
+        spec_version: str,
+        version: int,
+        company_ids: str,
+        product_description: str,
+        product_ids: str,
+        product_category_cpc: str,
+        product_name_company: str,
+        comment: str,
+        pretty: bool
+) -> None:
+   """Create a new product carbon footprint."""
 
-    pcf = ProductCarbonFootprint(
-        company_name, status, spec_version, version,
-        company_ids.split(","), product_description,
-        product_ids.split(","), product_category_cpc,
-        product_name_company
-    )
+   # # Create a CarbonFootprint object for demonstration purposes
+   # carbon_footprint = CarbonFootprint(
+   #     # total=10.0,
+   #     # scope1=5.0,
+   #     # scope2=3.0,
+   #     # scope3=2.0,
+   # )
 
-    if pretty:
-        click.echo(json.dumps(pcf.to_dict(), indent=4))
-    else:
-        click.echo(pcf.to_dict())
+   # Create a ProductFootprint object using the provided data
+   product_footprint = ProductFootprint(
+       id=None,
+       spec_version=spec_version,
+       version=Version(version),
+       created=DateTime.now(),
+       updated=None,
+       status=ProductFootprintStatus(status),
+       status_comment=None,
+       validity_period=None,
+       company_name=company_name,
+       company_ids=[CompanyId(company_id) for company_id in company_ids.split(",")],
+       product_description=product_description,
+       product_ids=[ProductId(product_id) for product_id in product_ids.split(",")],
+       product_category_cpc=CPC(product_category_cpc),
+       product_name_company=product_name_company,
+       comment=comment,
+       extensions=None,
+       pcf=None,
+       preceding_pf_ids=None,
+   )
+
+   # Convert the ProductFootprint object to a dictionary
+   output_data = product_footprint.__dict__
+
+   # Print the output data in the desired format
+   if pretty:
+       click.echo(json.dumps(output_data, indent=4, default=str))
+   else:
+       click.echo(output_data)
 
 
 if __name__ == "__main__":
-    cli()
+   cli()

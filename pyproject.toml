@@ -10,6 +10,7 @@ python = "^3.12"
 click = "^8.1.7"
 urnparse = "^0.2.1"
 casregnum = "^1.0.1"
+pact-methodology = "^0.0.2"
 
 
 [tool.poetry.group.dev.dependencies]
