@@ -12,7 +12,7 @@ def test_create_command():
     assert result.exit_code == 0
     assert "My Corp" in result.output
     assert "Active" in result.output
-    assert "2.0.0" in result.output
+    assert "2.2.0" in result.output
     assert "urn:uuid:69585GB6-56T9-6958-E526-6FDGZJHU1326" in result.output
     assert "urn:epc:id:sgln:562958.00000.4" in result.output
     assert "Bio-Ethanol 98%, corn feedstock (bulk - no packaging)" in result.output
@@ -54,8 +54,8 @@ def test_create_command_with_pretty_print():
     result = runner.invoke(cli, [
         "create", "--version", 1, "--company-name", "My Corp", "--status", "Active",
         "--spec-version", "2.0.0", "--company-ids", "MyCorpId", "--product-description", "description",
-        "--product-ids", "product-ids", "--product-category-cpc", "12345",
-        "--product-name-company", "abc", "--pretty"])
+        "--product-ids", "product-ids", "--product-category-cpc", "01142",
+        "--product-name-company", "abc", "--comment", "abc", "--pretty"])
     assert result.exit_code == 0
 
     # Load the output as JSON and check for the expected structure (Adapt as needed)
@@ -63,15 +63,21 @@ def test_create_command_with_pretty_print():
     assert output_json['companyName'] == "My Corp"
 
 
-def test_create_command_with_invalid_product_category_cpc_non_numeric():
+def test_create_command_with_invalid_product_category_cpc():
     runner = CliRunner()
-    result = runner.invoke(cli, ["create", "--product-category-cpc", "123AB"])
+    result = runner.invoke(cli, [
+        "create", "--version", 1, "--company-name", "My Corp", "--status", "Active",
+        "--spec-version", "2.0.0", "--company-ids", "MyCorpId", "--product-description", "description",
+        "--product-ids", "product-ids", "--product-category-cpc", "12345",
+        "--product-name-company", "abc", "--comment", "abc"])
     assert result.exit_code != 0
-    assert "Product category CPC must be a numerical value." in result.output
+    assert "Invalid CPC code" in result.output
 
-
-def test_create_command_with_invalid_product_category_cpc_too_long():
+def test_create_command_with_valid_product_category_cpc():
     runner = CliRunner()
-    result = runner.invoke(cli, ["create", "--product-category-cpc", "123456"])
-    assert result.exit_code != 0
-    assert "Product category CPC cannot exceed 5 characters." in result.output
+    result = runner.invoke(cli, [
+        "create", "--version", 1, "--company-name", "My Corp", "--status", "Active",
+        "--spec-version", "2.0.0", "--company-ids", "MyCorpId", "--product-description", "description",
+        "--product-ids", "product-ids", "--product-category-cpc", "01142",
+        "--product-name-company", "abc", "--comment", "abc"])
+    assert result.exit_code == 0
