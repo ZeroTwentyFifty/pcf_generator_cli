@@ -61,6 +61,11 @@ def create(
 ) -> None:
     """Create a new product carbon footprint."""
 
+    # fill in when availble
+    # carbon_footprint = CarbonFootprint(
+    #     pass=pass
+    # )
+
     # Create a ProductFootprint object using the provided data
     cpc_lookup = CPCCodeLookup()
     cpc = cpc_lookup.lookup(product_category_cpc)
